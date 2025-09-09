@@ -1,0 +1,73 @@
+<div class="sidebar">
+    <div class="logo-details">
+      <i class="fa-solid fa-cloud-arrow-up icon"></i>
+      <div class="logo_name">SenntCloud</div>
+      <i class="bx bx-menu" id="btn" (click)="menuToggle()"></i>
+    </div>
+    <ul class="nav-list">
+        <li>
+            <a routerLink="/">
+            <i class="bx bx-grid-alt"></i>
+            <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li>
+        <li>
+            <a routerLink="/folders">
+            <i class="bx bx-folder"></i>
+            <span class="links_name">All Folders</span>
+            </a>
+            <span class="tooltip">All Folders</span>
+        </li>
+        <li>
+            <a routerLink="/files">
+            <i class="bx bx-file"></i>
+            <span class="links_name">All Files</span>
+            </a>
+            <span class="tooltip">All Files</span>
+        </li>
+        <li>
+            <a (click)="collapseAnalitycs()" class="analitycs">
+                <i class="bx bx-pie-chart-alt-2"></i>
+                <span class="links_name">Analytics</span>
+                <i class="bx bxs-chevron-down"></i>
+            </a>
+            <span class="tooltip">Analytics</span>
+        </li>
+        
+        <div class="collapse-analytics">
+            <div class="analytic">
+                <p class="title">Space avaible: {{ user.analytics.maxCloudSize }}</p>
+            </div>
+            <div class="analytic">
+                <p class="title">Space used: {{ user.analytics.totalSize }}</p>
+            </div>
+            <div class="analytic">
+                <p class="title">Folders: {{ user.analytics.folders }}</p>
+            </div>
+            <div class="analytic">
+                <p class="title last">Files: {{ user.analytics.files }}</p>
+            </div>
+        </div>
+        <li>
+            <a routerLink="/settings">
+            <i class="bx bx-cog"></i>
+            <span class="links_name">Settings</span>
+            </a>
+            <span class="tooltip">Settings</span>
+        </li>
+        <li class="profile">
+            <div class="profile-details">
+                <div class="name">{{ user.username }}</div>
+            </div>
+            <i class="bx bx-log-out" id="log_out" (click)="logout()"></i>
+            <span class="tooltip">Logout</span>
+        </li>
+    </ul>
+</div>
+
+<section class="home-section">
+    <router-outlet></router-outlet>
+</section>
+
+<app-loading [show]="maskLoad()"></app-loading>

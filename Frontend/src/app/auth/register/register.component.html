@@ -1,0 +1,138 @@
+<div class="auth register">
+  <div class="container-xl">
+    <div class="row">
+      <form class="col-md-7 form" [formGroup]="form" (ngSubmit)="register()">
+        <div class="text">
+          Register in to
+          <p>SenntCloud</p>
+        </div>
+
+        <div class="form-floating form-floating-custom mb-3">
+          <input
+            formControlName="username"
+            type="text"
+            class="form-control"
+            id="input-name"
+            placeholder="Enter Name"
+          />
+          <label for="input-name">Name</label>
+
+          @if (haveErrors('username')) {
+          <div class="div-error">
+            @if (hasError('username', 'minlength')) {
+            <div>*must have at least 3 letters</div>
+            } @if (hasError('username', 'required')) {
+            <div>*required</div>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="form-floating form-floating-custom mb-3">
+          <input
+            formControlName="email"
+            type="text"
+            class="form-control"
+            id="input-username"
+            placeholder="Enter Email"
+          />
+          <label for="input-username">Email</label>
+
+          @if (haveErrors('email')) {
+          <div class="div-error">
+            @if (hasError('email', 'not_available')) {
+            <div>*email is already in use</div>
+            } @if (hasError('email', 'email')) {
+            <div>*enter a valid email</div>
+            } @if (hasError('email', 'required')) {
+            <div>*required</div>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="form-floating form-floating-custom form-password auth-pass-inputgroup mb-3">
+          <input
+            formControlName="password"
+            type="password"
+            class="form-control"
+            id="password-input"
+            placeholder="Enter Password"
+          />
+          <button
+            (click)="togglePasswordVisibility()"
+            type="button"
+            class="btn btn-link position-absolute h-100 end-0 top-0"
+            id="password-addon"
+          >
+            <i class="icon-password fa-regular fa-eye"></i>
+          </button>
+          <label for="input-password">Password</label>
+
+          @if(haveErrors('password')){
+            <div class="div-error">
+                @if(hasError('password', 'minlength')){
+                    <div>*must have at least 8 letters</div>
+                }@else if(hasError('password', 'required')){
+                    <div>*required</div>
+                }
+            </div>
+          }
+        </div>
+
+        <div class="form-floating form-floating-custom form-password auth-pass-inputgroup mb-3">
+          <input
+            formControlName="confirmPassword"
+            type="password"
+            class="form-control"
+            id="conf-password-input"
+            placeholder="Enter Confirm Password"
+          />
+          <button
+            (click)="togglePasswordVisibility('conf-')"
+            type="button"
+            class="btn btn-link position-absolute h-100 end-0 top-0"
+            id="conf-password-addon"
+          >
+            <i class="conf-icon-password fa-regular fa-eye"></i>
+          </button>
+          <label for="input-password">Confirm Password</label>
+
+          @if(form.get('confirmPassword')?.touched && form.errors &&
+          form.hasError('match_password')){
+          <div class="div-error">
+            <div>*passwords don't match</div>
+          </div>
+          }
+        </div>
+        <div class="mt-4">
+          <button class="btn btn-dark shadow-none w-100" type="submit">Register</button>
+        </div>
+        <hr />
+        <div class="mt-3 text-center">
+          <p class="mb-0 text-muted">
+            Have an account ?<a
+              (click)="signin()"
+              class="text-success fw-bold text-decoraton-underline ms-1"
+            >
+              Sign in
+            </a>
+          </p>
+        </div>
+      </form>
+      <div class="col-md-5 text_auth">
+        <div class="fondo"></div>
+        <img src="assets/images/auth/cloud_blanco.png" alt="" class="logo" />
+        <div class="circulo-container">
+          <div class="circulo">
+            <span class="ondas morada"></span>
+            <span class="ondas rosa"></span>
+            <span class="circulo fondo"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loading [show]="maskLoad()"></app-loading>

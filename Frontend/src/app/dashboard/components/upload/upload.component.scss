@@ -1,0 +1,50 @@
+@use '../../../../vars.scss' as *;
+
+.button-container{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 10px;
+}
+
+.button_upload{
+    background: $primary;
+    color: #fff;
+}
+
+#accordion-uploading{
+    display: none;
+    max-height: 300px;
+    max-width: 250px;
+    overflow: auto;
+    box-shadow: 0 0 6px #bdbdbd;
+}
+
+#accordion-uploading.show{
+    display: block;
+}
+
+#file{
+    opacity: 0;
+    position: absolute;
+    top: -100px;
+}
+
+.icon-close-upload{
+    margin-left: auto;
+}
+
+.message-uploaded{
+    overflow-x: auto;
+    text-overflow: unset;
+}
+
+@media(min-width: 768px){
+    #accordion-uploading{
+        max-height: 400px;
+        max-width: 350px;
+    }
+}

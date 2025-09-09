@@ -1,0 +1,302 @@
+@use './vars' as *;
+
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+
+
+// GENERAL
+
+body {
+    font-family: 'Nunito', sans-serif !important;
+    line-height: 26px;
+    color: $primary;
+    font-weight: 400;
+}
+
+.btn,
+.btn:focus,
+button,
+button:focus {
+  outline: none !important;
+}
+
+a {
+  text-decoration: none !important;
+  outline: none;
+}
+
+p {
+  font-size: 16px;
+}
+
+.white-snack-bar .mdc-snackbar__surface{
+    background-color: #fff !important;  // Fondo blanco para todo el SnackBar
+    color: black !important;  // Color del texto
+    box-shadow: none;  // Eliminar sombras si es necesario
+}
+  
+
+#toast-container > div{
+    padding: 8px 25px 8px 50px;
+    width: 300px;
+}
+
+.toast-close-button{
+    top: 0;
+}
+
+// AUTH
+.auth{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background: #eff3ff;
+    // background: url(./assets/images/auth/fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.auth .container-xl{
+    height: 100%;
+    border-radius: 10px;
+    background: #fff;
+    // box-shadow: 0 0 6px #484848;
+    // box-shadow: 0 0 6px #ccc;
+
+    // box-shadow: 0px 0px 4px 2px rgba(232,205,227,0.75);
+    // -webkit-box-shadow: 0px 0px 4px 2px rgba(232,205,227,0.75);
+    // -moz-box-shadow: 0px 0px 4px 2px rgba(232,205,227,0.75);
+}
+
+.auth .icon-password, .auth .conf-icon-password{
+    color: $primary;
+}
+
+.auth .text_auth{
+    padding: 0;
+    height: 200px;
+    background: url(./assets/images/auth/images4.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.auth .text_auth .fondo{
+    width: 100%;
+    height: 100%;
+    background: #1616641c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    border-radius: 10px 0 0 10px;
+}
+
+.auth.register .text_auth .fondo{
+    border-radius: 0 10px 10px 0;
+}
+
+.auth .text_auth .logo{
+    width: 120px;
+    position: relative;
+    top: -5px;
+}
+
+.auth .circulo{
+    width: 100px;
+    height: 60px;
+    border-radius:50%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 1px 2px 4px #ffffff;
+    
+    &-container{
+        width: 100px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90px;
+        background-image: linear-gradient(#ff999980, #c558e830);
+        position: absolute;
+        bottom: -46px;
+        z-index: 100;
+    }
+    &.fondo{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        background-image: radial-gradient(rgba(249, 244, 244, 0.5019607843), rgba(197, 88, 232, 0.1882352941));
+    }
+  }
+  .ondas{
+  
+    bottom:0px;
+    background-color: pink;
+    position: absolute;
+    width: 100%;
+    height: 70%;
+    border-radius:50%;
+    animation-name: move;
+    animation-duration: 2s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    
+    &.morada{
+        animation-direction:alternate-reverse;
+        background-color: rgb(255 255 255 / 44%);
+        border-radius: 22% 100% 30% 0px/0% 88% 0px 0px;
+    }
+
+    &.rosa{
+        background-color: rgb(255 255 255 / 76%);
+        border-radius: 100% 22% 0% 0px/88% 0px 0px 0px;
+    }
+}
+@keyframes move{
+    from{
+        border-radius: 100% 22% 0% 0px / 88% 0px 0px 0px;
+    }
+    to{
+        border-radius: 22% 100% 30% 0px / 0% 88% 0px 0px;
+    }
+}
+
+.auth .form{
+    padding: 60px 20px;
+}
+
+.auth .div-error{
+    color: red;
+    margin-bottom: -10px;
+}
+
+.auth.register .form{
+    padding: 52px 20px;
+}
+
+.form-floating-custom {
+    font-size: 14px;
+}
+
+.form-floating-custom .form-control {
+    border-radius: 0;
+}
+
+.form-floating-custom .form-control:focus {
+    border-color: #1fafa5 !important;
+    box-shadow: none;
+}
+
+.form-floating-custom .btn-link {
+    padding: 0.7rem 0.9rem;
+}
+
+.btn-dark {
+    background: $primary;
+    border-color: $primary !important;
+}
+
+.btn-dark:hover, .btn-dark:focus, .btn-dark:active {
+    background: #232222;
+    border-color: #232222;
+}
+
+.btn-outline-dark {
+    color: $primary;
+    border-color: $primary;
+}
+
+.btn-outline-dark:hover, .btn-outline-dark:focus, .btn-outline-dark:active{
+    background: $primary;
+    border-color: $primary;
+}
+
+.auth .form .text{
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 25px;
+
+    p{
+        font-size: 23px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+}
+
+.auth a{
+    cursor: pointer;
+}
+
+@media(max-width: 767px){
+    .auth.register .row{
+        flex-flow: column-reverse;
+    }
+}
+
+@media(min-width: 768px){
+    .auth .circulo{
+        width: 120px;
+    }
+    
+    .auth .circulo-container{
+        width: 120px;
+        height: 115px;
+        bottom: auto;
+        right: -59px;
+    }
+    
+    .auth.register .circulo-container{
+        height: 115px;
+        bottom: auto;
+        right: auto;
+        left: -59px;
+    }
+
+    .auth .circulo{
+        height: 80px;
+    }
+
+    .auth .container-xl{
+        max-height: 550px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 1100px;
+    }
+
+    @media(max-height: 600px){
+        .auth .container-xl{
+            height: 90vh;
+        }
+    }
+
+    .auth .row{
+        height: 100%;
+    }
+
+    .auth .text_auth .logo{
+        width: 140px;
+    }
+
+    .auth .text_auth{
+        height: 100%;
+        border-radius: 10px 0 0 10px;
+    }
+    
+    .auth.register .text_auth{
+        border-radius: 0 10px 10px 0;
+    }
+    
+    .auth .form{
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}
+
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,135 @@
+<div class="dashboard">
+  <div class="pathDiv">
+    <div class="path">
+      <a routerLink="/">
+        <i class="fas fa-home"></i>
+      </a>
+    </div>
+    @for (path of paths; track path) {
+      <div>
+        <span>/ </span>
+        <a [routerLink]="path.link" class="detail">{{ path.path }}</a>
+      </div>
+    }
+  </div>
+
+  <div class="data">
+    <h2>
+      My unit
+
+      <mat-slide-toggle [(ngModel)]="viewTable">View Table</mat-slide-toggle>
+    </h2>
+
+    <!-- View Simple -->
+    @if (!viewTable) {
+      <div class="data-container">
+        <div class="folders-container">
+          <div class="folders">
+            @for (folder of data.content.directories; track folder) {
+              <div class="folder">
+                <div (click)="navigateFolder(folder.name)" class="folder-name" data-toggle="tooltip" data-placement="bottom" title="{{ folder }}">
+                  <span class="icon">
+                    <i class="fas fa-folder"></i>
+                  </span>
+                  <p class="name">{{ folder.name }}</p>
+                </div>
+                <app-actions [maskLoad]="maskLoad" name="{{ folder.name }}" path="{{ path }}"></app-actions>
+              </div>
+            }
+          </div>
+        </div>
+        <div class="files-container">
+          <div class="files">
+            @for (file of data.content.files; track file) {
+              <div class="file">
+                <div class="file-name" data-toggle="tooltip" data-placement="bottom" title="{{ file }}">
+                  <span class="icon">
+                    <i class="fas {{ getIcon(file.name) }}"></i>
+                  </span>
+                  <p class="name">{{ file.name }}</p>
+                </div>
+                <app-actions [maskLoad]="maskLoad" name="{{ file.name }}" path="{{ path }}" [isFile]="true"></app-actions>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- View Table -->
+    @if (viewTable) {
+      <div class="data-container">
+        @if (data.content.directories.length > 0 || loading) {
+          <table matSort (matSortChange)="sortDirectories($event)" class="table">
+            <tr>
+              <th width="5%"></th>
+              <th width="45%" mat-sort-header="name">Name</th>
+              <th width="15%">Size</th>
+              <th width="15%" mat-sort-header="date">Date</th>
+              <th width="20%">Actions</th>
+            </tr>
+            @for (folder of sortedDirectories; track folder) {
+              <tr class="containerDir">
+                <td class="open" (click)="navigateFolder(folder.name)">
+                  <span class="icon">
+                    <i class="fas fa-folder"></i>
+                  </span>
+                </td>
+                <td class="open" (click)="navigateFolder(folder.name)">{{folder.name}}</td>
+                <td class="open" (click)="navigateFolder(folder.name)"> — </td>
+                <td class="open" (click)="navigateFolder(folder.name)">{{ getDate(folder.createdAt) }}</td>
+                <td class="no-open">
+                  <app-actions [maskLoad]="maskLoad" name="{{ folder.name }}" path="{{ path }}"></app-actions>
+                </td>
+              </tr>
+            }
+          </table>
+        }
+        @if (data.content.files.length > 0 || loading) {
+          <table matSort (matSortChange)="sortFiles($event)" class="table">
+            <tr>
+              <th width="5%"></th>
+              <th width="45%" mat-sort-header="name">Name</th>
+              <th width="15%" mat-sort-header="size">Size</th>
+              <th width="15%" mat-sort-header="date">Date</th>
+              <th width="20%">Actions</th>
+            </tr>
+            @for (file of sortedFiles; track file) {
+              <tr class="containerFiles">
+                <td>
+                  <span class="icon">
+                    <i class="fas {{ getIcon(file.name) }}"></i>
+                  </span>
+                </td>
+                <td>{{file.name}}</td>
+                <td>{{ getSize(file.size) }}</td>
+                <td>{{ getDate(file.createdAt) }}</td>
+                <td>
+                  <app-actions [maskLoad]="maskLoad" name="{{ file.name }}" path="{{ path }}" [isFile]="true"></app-actions>
+                </td>
+              </tr>
+            }
+          </table>
+        }
+      </div>
+    }
+  </div>
+
+  @if (data.content.directories.length < 1 && data.content.files.length < 1 && !loading) {
+    <div class="empty">
+      @if (data.path) {
+        <div class="empty">
+          This folder is empty
+        </div>
+      }
+      @if (data.path == '') {
+        <div class="empty">
+          Your drive is empty
+        </div>
+      }
+    </div>
+  }
+
+  <app-upload [path]="path" [maskLoad]="maskLoad"></app-upload>
+  <app-loading [show]="maskLoad()"></app-loading>
+</div>

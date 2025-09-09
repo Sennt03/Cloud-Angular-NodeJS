@@ -1,0 +1,13 @@
+<div class="modal-container" id="modal-container">
+    <div class="modal-header">
+      <h2>{{ data.title }}</h2>
+      <button (click)="closeDialog()" class="button-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>{{ data.message }}</p>
+    </div>
+    <div class="modal-footer">
+        <button mat-raised-button (click)="closeDialog()">Close</button>
+        <button mat-raised-button color="primary" (click)="confirm()">Confirm</button>
+    </div>
+</div>

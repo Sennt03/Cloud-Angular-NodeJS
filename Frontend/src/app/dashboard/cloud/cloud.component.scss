@@ -1,0 +1,133 @@
+.dashboard{
+    width: 90%;
+    height: 92vh;
+    background: #FFF;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    top: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+}
+
+.data h2{
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.data-container{
+    height: calc(92vh - 100px);
+    width: calc(100vw - 150px);
+    overflow: auto;
+
+    table td span{
+        font-size: 20px;
+        color: #757575;
+    }
+}
+
+.pathDiv{
+    display: flex;
+    gap: 0 5px;
+    font-size: 17px;
+}
+
+.files-container h2,
+.folders-container h2{
+    margin: 10px 0;
+}
+
+.files,
+.folders{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.file,
+.folder,
+.pathDiv a{
+    color: #0000008a;
+}
+
+.file-name:hover,
+.folder-name:hover,
+.pathDiv a:hover{
+    color: #00000061;
+}
+
+.containerDir:hover{
+    background: #d4d4d461;
+    cursor: pointer;
+}
+
+.containerDir:hover span{
+    background: transparent;
+}
+
+.no-open{
+    background: #fff;
+}
+
+.file,
+.folder{
+    // display: flex;
+    // justify-content: space-between;
+    display: grid;
+    grid-template-columns: 70% 1fr;
+    // gap: 0 15px;
+    width: 200px;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 19px;
+    height: 50px;
+    margin: 0 5px 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.folder{
+    cursor: pointer;
+}
+
+.file p,
+.folder p{
+    margin: 0;
+    font-size: 19px;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.file-name,
+.folder-name{
+    display: flex;
+    max-width: 100%;
+    height: 100%;
+    align-items: center;
+    gap: 15px;
+}
+
+.empty{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+}
+
+.table{
+    width: 100%;
+    font-size: 15px;
+}
+
+@media(min-width: 600px){
+    .data-container{
+        width: 100%;
+    }
+}
