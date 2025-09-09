@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -18,7 +18,7 @@ import { UploadComponent } from '../components/upload/upload.component';
   templateUrl: './cloud.component.html',
   styleUrl: './cloud.component.scss'
 })
-export class CloudComponent {
+export class CloudComponent implements OnInit{
   viewTable = true
 
   maskLoad = signal(false)
