@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { CloudService } from '@services/cloud.service';
 import { sharedImports } from '@shared/shared.imports';
@@ -11,22 +11,16 @@ import { sharedImports } from '@shared/shared.imports';
   styleUrl: './bottom-sheet.component.scss'
 })
 export class BottomSheetComponent {
-  constructor(
-    private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>,
-    private cloudService: CloudService
-  ) {}
+  private _bottomSheetRef = inject(MatBottomSheetRef<BottomSheetComponent>)
 
-  openLink(event: MouseEvent, method: 'folder' | 'file'): void {
-    this[method]()
+  constructor() {}
+
+  choose(option: string) {
+    this._bottomSheetRef.dismiss(option);
   }
 
-  folder(){
-    this.cloudService.$newFolder.emit(true)
-    this._bottomSheetRef.dismiss();
-  }
 
-  file(){
-    document.getElementById('file')?.click()
+  close() {
     this._bottomSheetRef.dismiss();
   }
 }

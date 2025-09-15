@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -19,52 +19,55 @@ import { UploadComponent } from '../components/upload/upload.component';
   styleUrl: './cloud.component.scss'
 })
 export class CloudComponent implements OnInit{
-  viewTable = true
+  
+  private router = inject(Router)
+  private dashBoardService = inject(DashboardService)
+  private userService = inject(UserService)
 
   maskLoad = signal(false)
-  loading = true
-  path!: string
+  loading = signal(true)
+  downloading = signal(false)
+  path = signal<string>('')
+  sortedDirectories = signal<any[]>([])
+  sortedFiles = signal<any[]>([])
+  viewTable = true
+  reloadSubscription!: Subscription
   urlSubscription!: Subscription
 
-  paths: {
+  paths = signal<{
     path: string,
     link: string
-  }[] = []
+  }[]>([])
 
-  data: LsOpenDir = {
+  data = signal<LsOpenDir>({
     path: '',
     content: {
       directories: [],
       files: []
     }
-  }
+  })
 
-  sortedDirectories: any = []
-  sortedFiles: any = []
-
-  constructor(
-    private router: Router,
-    private dashBoardService: DashboardService,
-    private userService: UserService
-  ){
+  constructor(){
     if (window.innerWidth < 768) this.viewTable = false
   }
 
   ngOnInit(): void {
     this.processURL()
+
     this.urlSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.processURL();
       }
     });
-
-    this.dashBoardService.reloadDashboard$.subscribe(data => {
+    
+    this.reloadSubscription = this.dashBoardService.reloadDashboard$.subscribe(data => {
       this.newActionReload()
     });
   }
 
   ngOnDestroy(): void {
     this.urlSubscription.unsubscribe()
+    this.reloadSubscription.unsubscribe()
   }
 
   processURL() {
@@ -79,8 +82,8 @@ export class CloudComponent implements OnInit{
       
       data.push(detail)
     });
-    this.paths = this.router.url.split('/').length > 2 ? data : [];
-    this.path = details.join('/')
+    this.paths.set(this.router.url.split('/').length > 2 ? data : [])
+    this.path.set(details.join('/'))
     this.openDir()
   }
 
@@ -92,7 +95,7 @@ export class CloudComponent implements OnInit{
   }
 
   navigateFolder(path: string){
-    const newPath = this.path + '/' + path
+    const newPath = this.path() + '/' + path
     this.router.navigate([`/r/${newPath}`])
   }
 
@@ -157,15 +160,15 @@ export class CloudComponent implements OnInit{
   }
 
   sortData(sort: Sort | null, type: 'files' | 'directories'){
-    const data = this.data.content[type].slice();
+    const data = this.data().content[type].slice();
     const sortedArray = type == 'files' ? 'sortedFiles' : 'sortedDirectories'
 
     if (!sort || !sort.active || sort.direction === '') {
-      this[sortedArray] = (data as never);
+      this[sortedArray].set(data)
       return;
     }
   
-    this[sortedArray] = data.sort((a, b) => {
+    this[sortedArray].set(data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'name':
@@ -177,25 +180,29 @@ export class CloudComponent implements OnInit{
         default:
           return 0;
       }
-    }) as never;
+    }))
   }
 
   openDir(){
     this.maskLoad.set(true)
-    this.dashBoardService.openDir(this.path).subscribe({
+    this.dashBoardService.openDir(this.path()).subscribe({
       next: (res) => {
-        this.data = res
+        this.data.set(res)
         this.sortDirectories(null)
         this.sortFiles(null)
       },
       error: (err) => {
-        toastr.error(`/${this.path} - Forbidden.`, '')
+        toastr.error(`/${this.path()} - Forbidden.`, '')
         this.router.navigate([`/`])
       },
       complete: () => {
-        this.loading = false
+        this.loading.set(false)
         this.maskLoad.set(false)
       }
     })
+  }
+
+  downloadEvent(state: boolean){
+    this.downloading.set(state)
   }
 }

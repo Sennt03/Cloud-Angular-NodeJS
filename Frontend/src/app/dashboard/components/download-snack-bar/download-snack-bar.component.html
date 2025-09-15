@@ -1,7 +1,7 @@
 <div class="snack-bar-container">
-    <span class="downloadText">{{ downloadingText }}</span>
-    <mat-progress-bar mode="determinate" [value]="progressDownload"></mat-progress-bar>
-    <span class="progressText">{{ progressDownload }}%</span>
-    <span class="icon-close" (click)="closeSnackBar()">✖</span>
+    <span class="downloadText">{{ downloadingText() }}</span>
+    <mat-progress-bar mode="determinate" [value]="progressDownload()"></mat-progress-bar>
+    <span class="progressText">{{ progressDownload() }}%</span>
+    <!-- <span class="icon-close" (click)="closeSnackBar()">✖</span> -->
 </div>
   

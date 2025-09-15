@@ -7,22 +7,22 @@
     <ul class="nav-list">
         <li>
             <a routerLink="/">
-            <i class="bx bx-grid-alt"></i>
-            <span class="links_name">Dashboard</span>
+                <i class="bx bx-grid-alt"></i>
+                <span class="links_name">Dashboard</span>
             </a>
             <span class="tooltip">Dashboard</span>
         </li>
         <li>
             <a routerLink="/folders">
-            <i class="bx bx-folder"></i>
-            <span class="links_name">All Folders</span>
+                <i class="bx bx-folder"></i>
+                <span class="links_name">All Folders</span>
             </a>
             <span class="tooltip">All Folders</span>
         </li>
         <li>
             <a routerLink="/files">
-            <i class="bx bx-file"></i>
-            <span class="links_name">All Files</span>
+                <i class="bx bx-file"></i>
+                <span class="links_name">All Files</span>
             </a>
             <span class="tooltip">All Files</span>
         </li>
@@ -37,16 +37,16 @@
         
         <div class="collapse-analytics">
             <div class="analytic">
-                <p class="title">Space avaible: {{ user.analytics.maxCloudSize }}</p>
+                <p class="title">Space avaible: {{ user().analytics.maxCloudSize }}</p>
             </div>
             <div class="analytic">
-                <p class="title">Space used: {{ user.analytics.totalSize }}</p>
+                <p class="title">Space used: {{ user().analytics.totalSize }}</p>
             </div>
             <div class="analytic">
-                <p class="title">Folders: {{ user.analytics.folders }}</p>
+                <p class="title">Folders: {{ user().analytics.folders }}</p>
             </div>
             <div class="analytic">
-                <p class="title last">Files: {{ user.analytics.files }}</p>
+                <p class="title last">Files: {{ user().analytics.files }}</p>
             </div>
         </div>
         <li>
@@ -58,7 +58,7 @@
         </li>
         <li class="profile">
             <div class="profile-details">
-                <div class="name">{{ user.username }}</div>
+                <div class="name">{{ user().username }}</div>
             </div>
             <i class="bx bx-log-out" id="log_out" (click)="logout()"></i>
             <span class="tooltip">Logout</span>

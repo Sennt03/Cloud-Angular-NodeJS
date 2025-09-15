@@ -6,28 +6,27 @@
   </button>
 
   <mat-accordion id="accordion-uploading">
-    <mat-expansion-panel #expansionPanel (opened)="panelOpenState = true"
-      (closed)="panelOpenState = false">
+    <mat-expansion-panel #expansionPanel (opened)="panelOpenState.set(true)"
+      (closed)="panelOpenState.set(false)">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{ progressUpload.text }}
+          {{ progressUpload().text }}
         </mat-panel-title>
         <mat-panel-description>
-          @if (progressUpload.loading) {
-            <mat-progress-bar mode="determinate" [value]="progressUpload.value"></mat-progress-bar>
+          @if (progressUpload().loading) {
+            <mat-progress-bar mode="determinate" [value]="progressUpload().value"></mat-progress-bar>
           }
-          @if (!progressUpload.loading) {
+          @if (!progressUpload().loading) {
             <mat-icon class="icon-close-upload" (click)="closeAccordion()">close</mat-icon>
           }
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <!-- Cuando se ve -->
-      @if (progressUpload.loading) {
+      @if (progressUpload().loading) {
         <p>Uploading files, please wait a moment</p>
       }
       <mat-list>
-        @for (file of progressUpload.uploaded; track file) {
+        @for (file of progressUpload().uploaded; track file) {
           <mat-list-item>
             <mat-icon matListItemIcon [ngStyle]="{
               color: file.status == 200 ? '#0f9b0f' : '#af1313'

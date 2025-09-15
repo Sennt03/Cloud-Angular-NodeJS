@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, inject, Injectable } from '@angular/core';
 import { environment } from 'enviroments/enviroment';
 import { AuthService } from './auth.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -12,10 +12,9 @@ export class UserService {
   private url = `${environment.url_api}/user`
   userProfile = new EventEmitter<boolean>()
 
-  constructor(
-    private authService: AuthService,
-    private http: HttpClient
-  ) { }
+  private http = inject(HttpClient)
+
+  constructor() { }
 
   getProfile(): Observable<LsUser>{
     return this.http.get<LsUser>(this.url)

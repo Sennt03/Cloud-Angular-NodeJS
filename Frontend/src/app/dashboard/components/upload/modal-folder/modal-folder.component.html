@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Create new folder</h1>
 <div mat-dialog-content>
   <p>Enter folder name</p>
-    <input cdkFocusInitial matInput [(ngModel)]="data.name">
+    <input cdkFocusInitial matInput [(ngModel)]="data.name" pattern="[a-zA-Z0-9\s-]+">
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="close()">Cancel</button>

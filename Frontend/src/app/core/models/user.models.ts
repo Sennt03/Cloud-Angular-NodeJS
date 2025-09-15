@@ -10,4 +10,16 @@ export interface LsUser{
     }
 }
 
+export const LsUserDefault: LsUser = {
+    _id: '',
+    username: '',
+    email: '',
+    analytics: {
+        files: 0,
+        folders: 0,
+        totalSize: '0 MB',
+        maxCloudSize: '0 MB'
+    }
+}
+
 export type LsField = 'name' | 'username' | 'email'

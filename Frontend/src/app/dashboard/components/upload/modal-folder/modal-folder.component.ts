@@ -14,7 +14,7 @@ import toastr from '@shared/utils/toastr';
 export class ModalFolderComponent {
   constructor(
     public dialogRef: MatDialogRef<ModalFolderComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {name: string},
+    @Inject(MAT_DIALOG_DATA) public data: {name: string}
   ) {}
 
   close(): void {

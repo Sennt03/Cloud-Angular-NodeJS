@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, inject, input, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionPanel } from '@angular/material/expansion';
@@ -21,37 +21,39 @@ import { ModalFolderComponent } from './modal-folder/modal-folder.component';
 })
 export class UploadComponent {
 
-  @ViewChild('expansionPanel', { static: true }) expansionPanel!: MatExpansionPanel;
-  @Output() $newActionReload = new EventEmitter<boolean>()
-  @Input() path!: string;
-  @Input() maskLoad: any;
-  $newFolder!: Subscription
+  private _bottomSheet = inject(MatBottomSheet);
+  public dialog = inject(MatDialog)
+  private cloudService = inject(CloudService)
+  private dashBoardService = inject(DashboardService)
 
-  panelOpenState: boolean = false;
-  progressUpload: LsUploadFiles = {
+  @ViewChild('expansionPanel', { static: true }) expansionPanel!: MatExpansionPanel;
+  path = input<string>('')
+  maskLoad = input(false)
+  selectedOption: WritableSignal<string | null> = signal(null);
+
+  panelOpenState = signal(false);
+  progressUpload = signal<LsUploadFiles>({
     text: 'Uploading...',
     value: 0,
     loading: true,
     uploaded: []
-  }
+  })
 
-  constructor(
-    private _bottomSheet: MatBottomSheet,
-    private cloudService: CloudService,
-    public dialog: MatDialog,
-    private dashBoardService: DashboardService
-  ) {}
-
-  ngOnInit(): void {
-    this.$newFolder = this.cloudService.$newFolder.subscribe(() => this.newFolderModal())
-  }
-
-  ngOnDestroy(): void {
-    this.$newFolder.unsubscribe()
-  }
+  constructor() {}
 
   openBottomSheet(): void {
-    this._bottomSheet.open(BottomSheetComponent);
+    const ref = this._bottomSheet.open(BottomSheetComponent);
+
+    ref.afterDismissed().subscribe((result) => {
+      if (result) {
+        this.selectedOption.set(result);
+        if(result == 'folder'){
+          this.newFolderModal()
+        }else{
+          document.getElementById('file')?.click()
+        }
+      }
+    });
   }
 
   newFolderModal(){
@@ -67,39 +69,42 @@ export class UploadComponent {
   }
 
   createFolder(name: any){
-    this.cloudService.createFolder(name.trim(), this.path).subscribe({
+    this.cloudService.createFolder(name.trim(), this.path()).subscribe({
       next: (res) => {
         toastr.success(res.message, 'Successful')
-        // this.$newActionReload.emit(true)
         this.dashBoardService.reloadDashboard(true)
       },
       error: (err) => {
         toastr.error(err.error.message, 'Error')
-        this.maskLoad.next(false)
       }
     });
   }
 
   uploadFile($event: any){
     const files = $event.target.files
-    this.progressUpload.loading = true
-    this.progressUpload.value = 0
-    this.progressUpload.text = 'Uploading...'
-    this.progressUpload.uploaded = []
+    this.progressUpload.set({
+      loading: true,
+      value: 0,
+      text: 'Uploading...',
+      uploaded: []
+    })
     this.expansionPanel.close();
 
     document.getElementById('accordion-uploading')?.classList.add('show')
-    this.cloudService.uploadFile(files, this.path).subscribe({
+    this.cloudService.uploadFile(files, this.path()).subscribe({
       next: (res) => {
         if(!res?.event){
-          this.progressUpload.value = res.progress
+          this.progressUpload.update(val => ({...val, value: res.progress}))
         }else{
-          this.progressUpload.uploaded = res.event.responses
-          this.progressUpload.text = 'Finished'
+          this.progressUpload.update(val => ({
+            ...val,
+            uploaded: (res as any)?.event.responses,
+            text: 'Finished',
+            loading: false
+          }))
           this.expansionPanel.open();
-          this.progressUpload.loading = false
-          // this.$newActionReload.emit(true)
           this.dashBoardService.reloadDashboard(true)
+          toastr.success('Files uploaded!', '')
         }
       },
       error: (err) => {

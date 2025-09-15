@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from 'enviroments/enviroment';
 import { catchError, Observable, ObservableInput, Subject, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -14,9 +14,9 @@ export class DashboardService {
   private reloadDashboardSubject = new Subject<{data: any}>();
   reloadDashboard$ = this.reloadDashboardSubject.asObservable();
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  private http = inject(HttpClient)
+
+  constructor() { }
 
   openDir(path: string): Observable<LsOpenDir>{
     return this.http.get<LsOpenDir>(`${this.url}/openDir/${path}`)

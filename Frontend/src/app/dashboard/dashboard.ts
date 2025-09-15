@@ -1,28 +1,30 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { LsResAuth } from '@models/auth.models';
-import { LsUser } from '@models/user.models';
+import { LsUser, LsUserDefault } from '@models/user.models';
 import { AuthService } from '@services/auth.service';
 import { UserService } from '@services/user.service';
 import { sharedImports } from '@shared/shared.imports';
 import toastr from '@shared/utils/toastr';
-import { switchMap } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [...sharedImports, RouterOutlet],
+  imports: [...sharedImports, RouterOutlet, RouterModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
 export class Dashboard {
-  maskLoad = signal(false)
-  user!: LsUser
 
-  constructor(
-    private authService: AuthService,
-    private userService: UserService
-  ){}
+  private authService = inject(AuthService)
+  private userService = inject(UserService)
+
+  maskLoad = signal(false)
+  user = signal<LsUser>({...LsUserDefault})
+  $subUser!: Subscription
+
+  constructor(){}
 
   ngOnInit(): void {
     const screenWidth = window.innerWidth;
@@ -35,13 +37,17 @@ export class Dashboard {
     }
 
     const auth = this.authService.getAuth() as LsResAuth
-    this.user = auth.user
+    this.user.set(auth.user)
 
-    this.userService.userProfile.pipe(
+    this.$subUser = this.userService.userProfile.pipe(
       switchMap(() => this.userService.getProfile()),
     ).subscribe(res => {
-      this.user = res
+      this.user.set(res)
     });
+  }
+
+  ngOnDestroy(): void {
+    this.$subUser.unsubscribe()
   }
 
   menuToggle(open = false){

@@ -1,5 +1,5 @@
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, inject, Injectable } from '@angular/core';
 import { LsResMessage, LsUploadFile } from '@models/cloud.models';
 import { Observable, Subject } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -11,12 +11,9 @@ import { environment } from 'enviroments/enviroment';
 export class CloudService {
   private url = `${environment.url_api}/cloud`
 
-  $newFolder = new EventEmitter<boolean>()
+  private http = inject(HttpClient)
 
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService
-  ) { }
+  constructor() { }
 
   uploadFile(files: { [key: string]: File }, path: string): Observable<{ progress: number, event?: LsUploadFile }> {
     const formdata = new FormData();

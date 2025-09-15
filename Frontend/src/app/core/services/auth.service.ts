@@ -24,11 +24,11 @@ export class AuthService {
   }
 
   login(data: LsLogin): Observable<LsResAuth>{
-    return this.http.post<LsResAuth>(`${this.url}/login`, data)
+    return this.http.post<LsResAuth>(`${this.url}/login`, data, this.noToken)
   }
 
   register(data: LsRegister): Observable<LsResAuth>{
-    return this.http.post<LsResAuth>(`${this.url}/register`, data)
+    return this.http.post<LsResAuth>(`${this.url}/register`, data, this.noToken)
   }
 
   saveAuth(data: LsResAuth){

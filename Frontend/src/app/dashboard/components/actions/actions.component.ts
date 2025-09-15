@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input, output, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CloudService } from '@services/cloud.service';
@@ -16,10 +16,12 @@ import { saveAs } from 'file-saver';
   styleUrl: './actions.component.scss'
 })
 export class ActionsComponent {
-  @Input() isFile: boolean = false
-  @Input() path!: string
-  @Input() name!: string
-  @Input() maskLoad: any
+  isFile = input(false)
+  path = input('')
+  name = input('')
+  maskLoad = input(false)
+  downloading = input(false)
+  downloadEvent = output<boolean>()
 
   progressDownload = 0
 
@@ -35,48 +37,49 @@ export class ActionsComponent {
       duration: 0,  // No se cierra automáticamente
       horizontalPosition: 'right',
       verticalPosition: 'top',
-      panelClass: ['white-snack-bar'],
-      data: { progressDownload: this.progressDownload, downloadingText: 'Downloading...' }
+      panelClass: ['white-snack-bar']
     });
 
-    const pathDownload = this.path + '/' + this.name;
+    const pathDownload = this.path() + '/' + this.name();
     
+    this.downloadEvent.emit(true)
     this.cloudService.downloadFile(pathDownload).subscribe({
       next: (state) => {
-        // Actualiza el progreso
         this.progressDownload = state.progress;
-        
-        // Accede al componente SnackBar y actualiza sus valores
+
         const snackBarInstance = snackBarRef.instance as any;
-        snackBarInstance.progressDownload = this.progressDownload;
+        snackBarInstance.progressDownload.set(this.progressDownload)
         
         if (state.file) {
           const blob = new Blob([state.file]);
-          saveAs(blob, this.name);
-          // Accede al componente SnackBar y actualiza sus valores
-          snackBarInstance.downloadingText = 'Downloaded';
+          saveAs(blob, this.name());
+          snackBarInstance.downloadingText.set('Downloaded')
+          this.downloadEvent.emit(false)
+          
           setTimeout(() => {
             snackBarRef.dismiss();
           }, 3000);
         }
       },
       error: (err) => {
-        alert('Error downloading file, please report.');
+        toastr.error('Error downloading file, please report.', '');
+        this.downloadEvent.emit(false)
       },
       complete: () => {
         this.progressDownload = 0;
+        this.downloadEvent.emit(false)
       }
     });
   }
 
   deleteFile(){
-    const pathDelete = this.path + '/' + this.name;
+    const pathDelete = this.path() + '/' + this.name();
 
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '250px',
       data: {
         title: 'Delete',
-        message: `Confirm deleting "${this.name}"`
+        message: `Confirm deleting "${this.name()}"`
       }
     });
 
@@ -84,17 +87,14 @@ export class ActionsComponent {
       if (result?.confirmed) {
         toastr.setOption('timeOut', '0')
         toastr.info(`Deleting...`, '')
-        this.maskLoad.set(true)
         this.cloudService.deleteFile(pathDelete).subscribe({
           next: (res) => {
-            this.maskLoad.set(false)
             toastr.setDefaultsOptions()
             toastr.clear()
             toastr.success(res.message, '')
             this.dashBoardService.reloadDashboard(true)
           },
           error: () => {
-            this.maskLoad.set(false)
             toastr.clear()
             toastr.error('Error unexpected', '')
           },

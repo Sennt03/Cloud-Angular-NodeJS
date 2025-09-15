@@ -3,7 +3,7 @@ import { HttpContext, HttpContextToken, HttpInterceptorFn } from '@angular/commo
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 
-const NO_TOKEN_HEADER = new HttpContextToken<boolean>(() => false);
+export const NO_TOKEN_HEADER = new HttpContextToken<boolean>(() => false);
 
 export function noInterceptToken(){
 	return new HttpContext().set(NO_TOKEN_HEADER, true)

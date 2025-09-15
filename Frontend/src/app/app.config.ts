@@ -4,6 +4,7 @@ import { PreloadAllModules, provideRouter, withPreloading } from '@angular/route
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { tokenInterceptor } from '@services/token.service';
+import { sessionHandlerInterceptor } from '@services/session-handler.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,7 +12,7 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(
-      withInterceptors([tokenInterceptor])
+      withInterceptors([tokenInterceptor, sessionHandlerInterceptor])
     ),
   ]
 };

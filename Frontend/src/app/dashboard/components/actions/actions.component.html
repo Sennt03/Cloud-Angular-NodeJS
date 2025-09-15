@@ -18,8 +18,8 @@
     <mat-icon>delete</mat-icon>
     <span>Delete</span>
   </button>
-  @if (isFile) {
-    <button mat-menu-item (click)="download()">
+  @if (isFile()) {
+    <button mat-menu-item (click)="download()" [disabled]="downloading()">
       <mat-icon>download</mat-icon>
       <span>Download</span>
     </button>
