@@ -1,4 +1,4 @@
-import { Component, input, Input, signal } from '@angular/core';
+import { Component, inject, input, Input, signal } from '@angular/core';
 import { MatSnackBarRef } from '@angular/material/snack-bar';
 import { sharedImports } from '@shared/shared.imports';
 
@@ -10,10 +10,13 @@ import { sharedImports } from '@shared/shared.imports';
   styleUrl: './download-snack-bar.component.scss'
 })
 export class DownloadSnackBarComponent {
+  
+  private snackBarRef = inject(MatSnackBarRef<DownloadSnackBarComponent>)
+
   progressDownload = signal(0)
   downloadingText = signal('Downloading...')
 
-  constructor(private snackBarRef: MatSnackBarRef<DownloadSnackBarComponent>) {}
+  constructor() {}
 
   closeSnackBar() {
     this.snackBarRef.dismiss();

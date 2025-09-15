@@ -6,7 +6,7 @@ const pathSchema = Joi.object({
 });
 
 const nameSchema = Joi.object({
-  name: Joi.string().required().regex(/^[a-zA-Z0-9\s-]+$/)
+  name: Joi.string().required().regex(/^[a-zA-Z0-9\s-._@!()]+$/)
 });
 
 const newPathSchema = Joi.object({

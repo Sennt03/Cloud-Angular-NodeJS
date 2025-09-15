@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{ data.textDesc }}</h1>
+<div mat-dialog-content>
+  <p>{{ data.textTitle }}</p>
+  <input cdkFocusInitial matInput [(ngModel)]="data.name">
+  @if(data.ext && data.ext != ''){
+    <span style="margin-left: 5px;">{{ data.ext }}</span>
+  }
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button (click)="create()">{{ data.textBtn }}</button>
+  <button mat-button [mat-dialog-close]="data.name" id="create" style="display: none;">{{ data.textBtn }}</button>
+</div>

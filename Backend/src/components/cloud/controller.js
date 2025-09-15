@@ -104,6 +104,13 @@ async function uploadFile(userId, mipath, files){
 
     for (let i = 0; i < files.length; i++) {
         const file = files[i]
+        const allowedCharactersRegex = /^[a-zA-Z0-9\s-._@!()]+$/;
+
+        if(!allowedCharactersRegex.test(file.name)){
+            responses.push({name: file.name, message: `File name cannot contain special characters only can contain "-._@!()"`, status: 400})
+            continue
+        }
+
         const pathFile = path.join(pathComplete, file.name)
 
         const maxFileSizeInBytes = maxFileSizeInMB * 1024 * 1024;

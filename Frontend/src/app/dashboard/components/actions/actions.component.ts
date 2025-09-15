@@ -1,4 +1,4 @@
-import { Component, input, Input, output, signal } from '@angular/core';
+import { Component, inject, input, Input, output, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CloudService } from '@services/cloud.service';
@@ -7,6 +7,7 @@ import { ModalComponent, sharedImports } from '@shared/shared.imports';
 import toastr from '@shared/utils/toastr';
 import { DownloadSnackBarComponent } from '../download-snack-bar/download-snack-bar.component';
 import { saveAs } from 'file-saver';
+import { InputModalComponent } from '@shared/components/input-modal/input-modal.component';
 
 @Component({
   selector: 'app-actions',
@@ -16,6 +17,11 @@ import { saveAs } from 'file-saver';
   styleUrl: './actions.component.scss'
 })
 export class ActionsComponent {
+  private cloudService = inject(CloudService)
+  private _snackBar = inject(MatSnackBar)
+  private dialog = inject(MatDialog)
+  private dashBoardService = inject(DashboardService)
+
   isFile = input(false)
   path = input('')
   name = input('')
@@ -25,12 +31,7 @@ export class ActionsComponent {
 
   progressDownload = 0
 
-  constructor(
-    private cloudService: CloudService,
-    private _snackBar: MatSnackBar,
-    private dialog: MatDialog,
-    private dashBoardService: DashboardService
-  ){}
+  constructor(){}
 
   download() {
     const snackBarRef = this._snackBar.openFromComponent(DownloadSnackBarComponent, {
@@ -101,6 +102,52 @@ export class ActionsComponent {
         })
       }
     });
+  }
 
+  rename(){
+    const fileName = this.name()
+    const lastDotIndex = fileName.lastIndexOf('.')
+
+    let name = ''
+    let ext = ''
+
+    if ((lastDotIndex !== -1 && lastDotIndex !== 0) && this.isFile()) {
+      name = fileName.substring(0, lastDotIndex)
+      ext = '.' + fileName.substring(lastDotIndex + 1)
+    } else {
+      name = fileName
+    }
+    
+    const dialogRef = this.dialog.open(InputModalComponent, {
+      data: {
+        name: name,
+        textDesc: this.isFile() ? 'Rename file' : 'Rename folder',
+        textTitle: 'Enter new name',
+        textBtn: 'Edit',
+        ext: ext
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result && result.trim() != ''){
+        const path = this.path() + '/' + this.name();
+        const newName = this.isFile() ? result + ext : result
+
+        toastr.setOption('timeOut', '0')
+        toastr.info(`Editing...`, '')
+        this.cloudService.rename(newName, path).subscribe({
+          next: (res) => {
+            toastr.setDefaultsOptions()
+            toastr.clear()
+            toastr.success('Rename successful', '')
+            this.dashBoardService.reloadDashboard(true)
+          },
+          error: (err) => {
+            toastr.clear()
+            toastr.error(err.error.message, '')
+          }
+        })
+      }
+    })
   }
 }

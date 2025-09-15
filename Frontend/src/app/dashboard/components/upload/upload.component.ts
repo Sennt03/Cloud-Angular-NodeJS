@@ -8,9 +8,8 @@ import { CloudService } from '@services/cloud.service';
 import { DashboardService } from '@services/dashboard.service';
 import { sharedImports } from '@shared/shared.imports';
 import toastr from '@shared/utils/toastr';
-import { Subscription } from 'rxjs';
 import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
-import { ModalFolderComponent } from './modal-folder/modal-folder.component';
+import { InputModalComponent } from '@shared/components/input-modal/input-modal.component';
 
 @Component({
   selector: 'app-upload',
@@ -57,8 +56,13 @@ export class UploadComponent {
   }
 
   newFolderModal(){
-    const dialogRef = this.dialog.open(ModalFolderComponent, {
-      data: {name: ''},
+    const dialogRef = this.dialog.open(InputModalComponent, {
+      data: {
+        name: '',
+        textDesc: 'Create new folder',
+        textTitle: 'Enter a folder name',
+        textBtn: 'Create'
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -104,7 +108,7 @@ export class UploadComponent {
           }))
           this.expansionPanel.open();
           this.dashBoardService.reloadDashboard(true)
-          toastr.success('Files uploaded!', '')
+          toastr.success('Process finished!', '')
         }
       },
       error: (err) => {

@@ -1,20 +1,27 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { sharedImports } from '@shared/shared.imports';
 import toastr from '@shared/utils/toastr';
 
 @Component({
-  selector: 'app-modal-folder',
+  selector: 'app-input-modal.component',
   standalone: true,
   imports: [...sharedImports, FormsModule],
-  templateUrl: './modal-folder.component.html',
-  styleUrl: './modal-folder.component.scss'
+  templateUrl: './input-modal.component.html',
+  styleUrl: './input-modal.component.scss'
 })
-export class ModalFolderComponent {
+export class InputModalComponent {
+
   constructor(
-    public dialogRef: MatDialogRef<ModalFolderComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {name: string}
+    public dialogRef: MatDialogRef<InputModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {
+      name: string,
+      textDesc: string,
+      textTitle: string,
+      textBtn: string,
+      ext?: string
+    }
   ) {}
 
   close(): void {
@@ -30,4 +37,5 @@ export class ModalFolderComponent {
 
     document.getElementById('create')?.click()
   }
+
 }

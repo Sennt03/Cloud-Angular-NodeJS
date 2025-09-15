@@ -76,4 +76,8 @@ export class CloudService {
   deleteFile(path: string): Observable<LsResMessage>{
     return this.http.delete<LsResMessage>(`${this.url}/delete/${path}`)
   }
+
+  rename(name: string, path: string): Observable<LsResMessage>{
+    return this.http.post<LsResMessage>(this.url+'/rename/'+path, { name })
+  }
 }

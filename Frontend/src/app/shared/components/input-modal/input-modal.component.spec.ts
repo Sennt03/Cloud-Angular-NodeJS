@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalFolderComponent } from './modal-folder.component';
+import { InputModalComponent } from './input-modal.component';
 
-describe('ModalFolderComponent', () => {
-  let component: ModalFolderComponent;
-  let fixture: ComponentFixture<ModalFolderComponent>;
+describe('InputModalComponent', () => {
+  let component: InputModalComponent;
+  let fixture: ComponentFixture<InputModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModalFolderComponent]
+      imports: [InputModalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModalFolderComponent);
+    fixture = TestBed.createComponent(InputModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
