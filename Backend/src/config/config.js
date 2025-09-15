@@ -17,7 +17,7 @@ const config = {
     maxFileSizeInMB: 1024,
     maxCloudSizeInMB: 1024,
     usersUnlimit: [
-        {id: '6651fe5b1d140c0ca8201a59', email: 'admin@admin.com'}
+        {id: '68c84cfff99e415ca85534ca', email: 'admin@admin.com'}
     ],
 }
 

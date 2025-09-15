@@ -58,7 +58,7 @@
 
     <!-- View Table -->
     @if (viewTable) {
-      <div class="data-container">
+      <div class="data-container view-table">
         @if (data().content.directories.length > 0 || loading()) {
           <table matSort (matSortChange)="sortDirectories($event)" class="table">
             <tr>

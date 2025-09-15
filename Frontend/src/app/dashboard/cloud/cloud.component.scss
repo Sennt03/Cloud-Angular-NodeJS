@@ -1,15 +1,15 @@
 .dashboard{
-    width: 90%;
-    height: 92vh;
+    height: 100vh;
     background: #FFF;
-    margin: 0 auto;
     padding: 20px;
     position: relative;
-    top: 20px;
     border-radius: 5px;
     overflow: hidden;
     display: grid;
     grid-template-rows: auto auto 1fr;
+    width: 100%;
+    top: 0;
+    margin: 0;
 }
 
 .data h2{
@@ -20,7 +20,8 @@
 
 .data-container{
     height: calc(92vh - 100px);
-    width: calc(100vw - 150px);
+    width: 100%;
+
     overflow: auto;
 
     table td span{
@@ -126,8 +127,21 @@
     font-size: 15px;
 }
 
-@media(min-width: 600px){
+@media(max-width: 768px){
     .data-container{
         width: 100%;
+        
+        &.view-table{
+            width: calc(100vw - 78px);
+        }
+    }
+}
+
+@media(min-width: 768px){
+    .dashboard{
+        width: 90%;
+        top: 20px;
+        margin: 0 auto;
+        height: 92vh;
     }
 }
