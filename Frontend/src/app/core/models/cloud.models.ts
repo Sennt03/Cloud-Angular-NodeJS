@@ -21,3 +21,17 @@ export interface LsUploadFiles{
 export interface LsResMessage{
     message: string
 }
+
+export interface LsActionsInfo{
+    show: boolean,
+    path: string,
+    newPath: string,
+    type: 'move' | 'copy'
+}
+
+export const defaultInfoActions: LsActionsInfo = {
+    show: false,
+    path: '',
+    newPath: '',
+    type: 'copy'
+}

@@ -130,6 +130,11 @@ export class ActionsComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result && result.trim() != ''){
+        if(result.trim().length > 35){
+          toastr.error('New name max 35 letters', '')
+          return
+        }
+
         const path = this.path() + '/' + this.name();
         const newName = this.isFile() ? result + ext : result
 
@@ -143,6 +148,7 @@ export class ActionsComponent {
             this.dashBoardService.reloadDashboard(true)
           },
           error: (err) => {
+            toastr.setDefaultsOptions()
             toastr.clear()
             toastr.error(err.error.message, '')
           }

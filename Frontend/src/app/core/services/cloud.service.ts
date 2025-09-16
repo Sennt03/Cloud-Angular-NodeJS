@@ -23,11 +23,11 @@ export class CloudService {
         formdata.append('files', files[key]);
       }
     }
-    formdata.append('path', path);
+    formdata.append('path', decodeURI(path));
 
     const progressSubject = new Subject<{ progress: number, event?: LsUploadFile }>();
 
-    this.http.post<LsUploadFile>(`${this.url}/uploadFile/${path}`, formdata, {
+    this.http.post<LsUploadFile>(`${this.url}/uploadFile/${decodeURI(path)}`, formdata, {
       reportProgress: true,
       observe: 'events'
     }).subscribe((event: HttpEvent<any>) => {
@@ -47,13 +47,13 @@ export class CloudService {
   }
 
   createFolder(name: string, path: string): Observable<LsResMessage>{
-    return this.http.post<LsResMessage>(`${this.url}/createDir/${path}`, { name })
+    return this.http.post<LsResMessage>(`${this.url}/createDir/${decodeURI(path)}`, { name })
   }
 
   downloadFile(path: string): Observable<{ progress: number, file?: Blob }> {
     const progressSubject = new Subject<{ progress: number, file?: Blob }>();
 
-    this.http.get(`${this.url}/downloadFile/${path}`, {
+    this.http.get(`${this.url}/downloadFile/${decodeURI(path)}`, {
       responseType: 'blob',
       reportProgress: true,
       observe: 'events'
@@ -74,10 +74,10 @@ export class CloudService {
   }
 
   deleteFile(path: string): Observable<LsResMessage>{
-    return this.http.delete<LsResMessage>(`${this.url}/delete/${path}`)
+    return this.http.delete<LsResMessage>(`${this.url}/delete/${decodeURI(path)}`)
   }
 
   rename(name: string, path: string): Observable<LsResMessage>{
-    return this.http.post<LsResMessage>(this.url+'/rename/'+path, { name })
+    return this.http.post<LsResMessage>(this.url+'/rename/'+decodeURI(path), { name })
   }
 }

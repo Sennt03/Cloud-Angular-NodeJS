@@ -8,7 +8,7 @@
     @for (mipath of paths(); track mipath) {
       <div>
         <span>/ </span>
-        <a [routerLink]="mipath.link" class="detail">{{ mipath.path }}</a>
+        <a [routerLink]="decodeURL(mipath.link)" class="detail">{{ decodeURL(mipath.path) }}</a>
       </div>
     }
   </div>
@@ -19,6 +19,10 @@
 
       <mat-slide-toggle [(ngModel)]="viewTable">View Table</mat-slide-toggle>
     </h2>
+    
+    <div class="actions-modal">
+      <app-modal-action></app-modal-action>
+    </div>
 
     <!-- View Simple -->
     @if (!viewTable) {
@@ -75,7 +79,7 @@
                     <i class="fas fa-folder"></i>
                   </span>
                 </td>
-                <td class="open" (click)="navigateFolder(folder.name)">{{folder.name}}</td>
+                <td class="open folder-name-text" (click)="navigateFolder(folder.name)">{{folder.name}}</td>
                 <td class="open" (click)="navigateFolder(folder.name)"> — </td>
                 <td class="open" (click)="navigateFolder(folder.name)">{{ getDate(folder.createdAt) }}</td>
                 <td class="no-open">
@@ -101,7 +105,7 @@
                     <i class="fas {{ getIcon(file.name) }}"></i>
                   </span>
                 </td>
-                <td>{{file.name}}</td>
+                <td class="folder-name-text">{{file.name}}</td>
                 <td>{{ getSize(file.size) }}</td>
                 <td>{{ getDate(file.createdAt) }}</td>
                 <td>

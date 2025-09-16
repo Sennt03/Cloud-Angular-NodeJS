@@ -127,7 +127,15 @@
     font-size: 15px;
 }
 
+.folder-name-text{
+    overflow-wrap: anywhere;
+}
+
 @media(max-width: 768px){
+    .data{
+        overflow: auto;
+    }
+
     .data-container{
         width: 100%;
         

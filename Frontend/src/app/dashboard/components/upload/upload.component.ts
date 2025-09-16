@@ -73,6 +73,11 @@ export class UploadComponent {
   }
 
   createFolder(name: any){
+    if(name.trim().length > 35){
+      toastr.error('File name max 35 letters', '')
+      return
+    }
+
     this.cloudService.createFolder(name.trim(), this.path()).subscribe({
       next: (res) => {
         toastr.success(res.message, 'Successful')
@@ -108,7 +113,7 @@ export class UploadComponent {
           }))
           this.expansionPanel.open();
           this.dashBoardService.reloadDashboard(true)
-          toastr.success('Process finished!', '')
+          toastr.info('Process finished!', '')
         }
       },
       error: (err) => {

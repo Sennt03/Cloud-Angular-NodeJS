@@ -10,11 +10,12 @@ import toastr from '@shared/utils/toastr';
 import { Subscription } from 'rxjs';
 import { ActionsComponent } from '../components/actions/actions.component';
 import { UploadComponent } from '../components/upload/upload.component';
+import { ModalActionComponent } from '../components/modal-action/modal-action.component';
 
 @Component({
   selector: 'app-cloud.component',
   standalone: true,
-  imports: [...sharedImports, RouterModule, FormsModule, ActionsComponent, UploadComponent],
+  imports: [...sharedImports, RouterModule, FormsModule, ActionsComponent, UploadComponent, ModalActionComponent],
   templateUrl: './cloud.component.html',
   styleUrl: './cloud.component.scss'
 })
@@ -46,6 +47,8 @@ export class CloudComponent implements OnInit{
       files: []
     }
   })
+
+  decodeURL = (text: string) => decodeURI(text)
 
   constructor(){
     if (window.innerWidth < 768) this.viewTable = false
@@ -83,7 +86,7 @@ export class CloudComponent implements OnInit{
       data.push(detail)
     });
     this.paths.set(this.router.url.split('/').length > 2 ? data : [])
-    this.path.set(details.join('/'))
+    this.path.set(decodeURI(details.join('/')))
     this.openDir()
   }
 

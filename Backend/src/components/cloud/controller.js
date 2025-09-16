@@ -110,6 +110,11 @@ async function uploadFile(userId, mipath, files){
             responses.push({name: file.name, message: `File name cannot contain special characters only can contain "-._@!()"`, status: 400})
             continue
         }
+        
+        if(withoutExt(file.name.trim()).length > 35){
+            responses.push({name: file.name, message: `File name max 35 letters."`, status: 400})
+            continue
+        }
 
         const pathFile = path.join(pathComplete, file.name)
 
@@ -123,15 +128,11 @@ async function uploadFile(userId, mipath, files){
         }
 
         if(file.size > maxFileSizeInBytes && !analitycs.unlimit) {
-            // responses.push({message: `"${file.name}": El tamaño máximo es ${maxFileSizeInMB}MB.`, status: 400})
-            // responses.push({name: file.name, message: `El tamaño máximo es ${maxFileSizeInMB}MB.`, status: 400})
             responses.push({name: file.name, message: `The maximum size is ${maxFileSizeInMB}MB.`, status: 400})
             continue
         }
 
         if(file.name == archivoOculto){
-            // responses.push({message: `"${file.name}": No se puede subir un archivo con el nombre especificado.`, status: 400})
-            // responses.push({name: file.name, message: `No se puede subir un archivo con el nombre especificado.`, status: 400})
             responses.push({name: file.name, message: `Cannot upload a file with the specified name.`, status: 400})
             continue
         }
@@ -143,16 +144,12 @@ async function uploadFile(userId, mipath, files){
     
         try{
             await file.mv(pathComplete + '/' + file.name)
-            // responses.push({message: `"${file.name}": Archivo subido correctamente.`, status: 200})
-            // responses.push({name: file.name, message: `Archivo subido correctamente.`, status: 200})
             responses.push({name: file.name, message: `File uploaded successfully.`, status: 200})
         }catch(error){
-            // responses.push({message: `"${file.name}": Error inesperado.`, status: 500})
             responses.push({name: file.name, message: `Unexpected error.`, status: 500})
         }
     }
 
-    // return { message: 'Proceso finalizado.', responses }
     return { message: 'Finished process.', responses }
 }
 
@@ -166,7 +163,6 @@ async function deleteFile(userId, mipath){
         } else if (stats.isFile()) {
             await fs.unlink(pathComplete);
         } else {
-            // throw myError('Elemento no reconocido', 500)
             throw myError('Unrecognized element', 500)
         }
 
