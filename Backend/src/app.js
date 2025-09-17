@@ -35,7 +35,11 @@ class App{
         router(this.app)
 
         this.app.use(express.static(path.join(__dirname, '/uploads/docs')))
-        this.app.use(express.static(path.join(__dirname, '../public')))
+        this.app.use(express.static(path.join(__dirname, '../public/browser')))
+
+        this.app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname, '../public/browser/index.html'))
+        })
     }
 
     errHandlers(){

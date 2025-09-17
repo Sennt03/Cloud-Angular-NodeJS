@@ -18,5 +18,12 @@
         </mat-list>
     </div>
 
+    @if(!loading() && data().length <= 0){
+        <div class="text-empty">
+            There is no {{ type() }}!
+        </div>
+    }
+    
+
     <app-loading [show]="loading()"></app-loading>
 </div>

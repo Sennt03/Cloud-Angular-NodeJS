@@ -79,7 +79,7 @@ export class Dashboard {
       toastr.info('Goodbye!', '')
       this.maskLoad.set(false)
       this.authService.logout()
-    }, 1000);
+    }, 500);
   }
 
   collapseAnalitycs(){
