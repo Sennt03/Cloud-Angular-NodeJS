@@ -5,9 +5,11 @@ import { defaultInfoActions, LsActionsInfo } from '@models/cloud.models';
   providedIn: 'root'
 })
 export class ActionsService {
-  private infoActual = signal<LsActionsInfo>({...defaultInfoActions})
+  private _infoActual = signal<LsActionsInfo>({...defaultInfoActions})
 
-  public get info(): LsActionsInfo{
-    return this.infoActual()
+  infoActual = this._infoActual.asReadonly()
+
+  setInfo(data: LsActionsInfo){
+    this._infoActual.set(data)
   }
 }

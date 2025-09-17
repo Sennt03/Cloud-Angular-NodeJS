@@ -1,15 +1,15 @@
-<div class="container">
+<div class="container" [ngStyle]="{'display': info().show ? 'block' : 'none'}">
     <div class="header">
         <div class="texts">
-            <h1 class="title">Copiar</h1>
-            <p class="text">Muevete hacia la carpeta que deseas copiar el archivo!</p>
+            <h1 class="title">{{ info().type == 'copy' ? 'Copiar' : 'Mover'}} ({{ info().name }})</h1>
+            <div class="exit" (click)="cancel()">x</div>
         </div>
+        <p class="text">Muevete hacia la carpeta que deseas {{ info().type == 'copy' ? 'copiar' : 'mover'}} y da click en confirmar!</p>
         
-        <div class="exit">x</div>
     </div>
 
     <div class="btns">
         <!-- <button matButton color="secondary">Cancelar</button> -->
-        <button matButton color="primary">Confirmar</button>
+        <button matButton color="primary" (click)="confirm()">Confirmar</button>
     </div>
 </div>

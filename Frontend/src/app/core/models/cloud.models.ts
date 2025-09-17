@@ -25,13 +25,15 @@ export interface LsResMessage{
 export interface LsActionsInfo{
     show: boolean,
     path: string,
-    newPath: string,
-    type: 'move' | 'copy'
+    name: string,
+    type: 'move' | 'copy',
+    isFile: boolean
 }
 
 export const defaultInfoActions: LsActionsInfo = {
     show: false,
     path: '',
-    newPath: '',
-    type: 'copy'
+    name: '',
+    type: 'copy',
+    isFile: false
 }

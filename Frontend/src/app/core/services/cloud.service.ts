@@ -80,4 +80,13 @@ export class CloudService {
   rename(name: string, path: string): Observable<LsResMessage>{
     return this.http.post<LsResMessage>(this.url+'/rename/'+decodeURI(path), { name })
   }
+  
+  copy(path: string, newPath: string, isFile: boolean): Observable<LsResMessage>{
+    return this.http.post<LsResMessage>(this.url+'/copy/'+decodeURI(path), { newPath, isFile })
+  }
+  
+  move(path: string, newPath: string, isFile: boolean): Observable<LsResMessage>{
+    return this.http.post<LsResMessage>(this.url+'/move/'+decodeURI(path), { newPath, isFile })
+  }
+  
 }

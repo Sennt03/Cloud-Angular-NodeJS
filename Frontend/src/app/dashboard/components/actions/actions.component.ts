@@ -8,6 +8,7 @@ import toastr from '@shared/utils/toastr';
 import { DownloadSnackBarComponent } from '../download-snack-bar/download-snack-bar.component';
 import { saveAs } from 'file-saver';
 import { InputModalComponent } from '@shared/components/input-modal/input-modal.component';
+import { ActionsService } from '@services/actions.service';
 
 @Component({
   selector: 'app-actions',
@@ -18,6 +19,7 @@ import { InputModalComponent } from '@shared/components/input-modal/input-modal.
 })
 export class ActionsComponent {
   private cloudService = inject(CloudService)
+  private actionsService = inject(ActionsService)
   private _snackBar = inject(MatSnackBar)
   private dialog = inject(MatDialog)
   private dashBoardService = inject(DashboardService)
@@ -154,6 +156,16 @@ export class ActionsComponent {
           }
         })
       }
+    })
+  }
+
+  setAction(type: 'move' | 'copy'){
+    this.actionsService.setInfo({
+      show: true,
+      path: this.path() + '/' + this.name(),
+      name: this.name(),
+      type,
+      isFile: this.isFile()
     })
   }
 }

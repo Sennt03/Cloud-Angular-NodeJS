@@ -10,7 +10,8 @@ const nameSchema = Joi.object({
 });
 
 const newPathSchema = Joi.object({
-  newPath: Joi.string().required()
+  newPath: Joi.string().required(),
+  isFile: Joi.boolean().required(),
 });
 
 const uploadFileSchema = Joi.object({

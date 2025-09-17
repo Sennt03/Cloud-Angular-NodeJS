@@ -1,4 +1,4 @@
-const { dirExist, fileExist, withoutExt, getDate, getSize, existBoolean, getUniqueName, getNameFromPath } = require('../../libs/path')
+const { dirExist, fileExist, withoutExt, getDate, getSize, existBoolean, getUniqueName, getNameFromPath, isValidMove } = require('../../libs/path')
 const myError = require('../../libs/myError')
 const fs = require('fs-extra')
 const path = require('path')
@@ -78,6 +78,7 @@ async function downloadFile(userId, mipath){
 
 async function createDir(userId, mipath, name){
     const pathComplete = path.join(cloudPath + userId + '/' + mipath + '/' + name)
+    
     try{
         await fs.mkdir(pathComplete)
         // return {message: 'Carpeta creada correctamente'}
@@ -167,22 +168,23 @@ async function deleteFile(userId, mipath){
         }
 
     } catch (error) {
-        // if(error.code === 'ENOENT') throw myError('Ruta inexistente', 400)
         if(error.code === 'ENOENT') throw myError('Non-existent route', 400)
-        // else throw myError('Ha ocurrido un error inesperado.', 500)
         else throw myError('An unexpected error has occurred.', 500)
     }
 
     let nombre = getNameFromPath(mipath)
-    // return { message: `"${nombre}": Eliminado correctamente` }
     return { message: `"${nombre}" removed successfully` }
 }
 
-async function copy(userId, mipath, newPath){
+async function copy(userId, mipath, newPath, isFile){
     let name = getNameFromPath(mipath)
     
     const pathComplete = path.join(cloudPath + userId + '/' + mipath)
     let newPathComplete = path.join(cloudPath + userId + '/' + newPath + '/' + name)
+
+    if(!isFile && !isValidMove(mipath, newPath)){
+        throw myError('Cannot be copied within the same folder', 400)   
+    }
 
     const exist = await existBoolean(newPathComplete)
     if(exist){
@@ -194,10 +196,8 @@ async function copy(userId, mipath, newPath){
         await fs.copy(pathComplete, newPathComplete)
     }catch(e){
         if(e.code == 'ENOENT'){
-            // throw myError('La ruta del archivo o carpeta no existe', 400)
             throw myError('The file or folder path does not exist', 400)
         }else{
-            // throw myError(`Ha ocurrido un error inesperado`, 500)
             throw myError(`An unexpected error has occurred`, 500)
         }
     }
@@ -206,12 +206,16 @@ async function copy(userId, mipath, newPath){
     return { message: `"${name}": Copied successfully.` }
 }
 
-async function move(userId, mipath, newPath, reemplazar){
+async function move(userId, mipath, newPath, isFile, reemplazar){
     let name = getNameFromPath(mipath)
     
     const pathComplete = path.join(cloudPath + userId + '/' + mipath)
     let newPathComplete = path.join(cloudPath + userId + '/' + newPath + '/' + name)
 
+    if(!isFile && !isValidMove(mipath, newPath)){
+        throw myError('Cannot be copied within the same folder', 400)   
+    }
+    
     const options = { overwrite: false }
     if(reemplazar === 'true'){
         options.overwrite = true
@@ -221,17 +225,13 @@ async function move(userId, mipath, newPath, reemplazar){
         await fs.move(pathComplete, newPathComplete, options)
     }catch(e){
         if(e.code == 'ENOENT'){
-            // throw myError(`Ruta inexistente`, 400)
             throw myError(`Non-existent route`, 400)
-        }else if(reemplazar !== 'true'){
-            // throw myError(`"${name}": Ya existe en esta ruta.`, 409)
+        }else if(reemplazar != true){
             throw myError(`"${name}": It already exists on this route.`, 409)
         }else{
-            // throw myError(`Ha ocurrido un error inesperado.`, 500)
             throw myError(`An unexpected error has occurred.`, 500)
         }
     }
-    // return { message: `"${name}": Movido correctamente.` }
     return { message: `"${name}": Moved successfully.` }
 }
 

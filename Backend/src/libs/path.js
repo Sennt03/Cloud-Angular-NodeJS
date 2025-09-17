@@ -120,6 +120,35 @@ module.exports = {
         let inicio = mipath.lastIndexOf('/');
         inicio++;
         return mipath.substring(inicio);
+    },
+
+    isValidMove(init, newPath) {
+        function normalizeSegments(path) {
+            return path
+            .replace(/\\/g, "/")
+            .replace(/\/+/g, "/")
+            .replace(/^\/|\/$/g, "")
+            .split("/")
+            .filter(Boolean);
+        }
+
+        const from = normalizeSegments(init);
+        const to = normalizeSegments(newPath);
+
+        if (from.length === to.length && from.every((v, i) => v === to[i])) return false;
+
+        if (to.length >= from.length) {
+            let isInside = true;
+            for (let i = 0; i < from.length; i++) {
+            if (from[i] !== to[i]) {
+                isInside = false;
+                break;
+            }
+            }
+            if (isInside) return false;
+        }
+
+        return true;
     }
     
 }

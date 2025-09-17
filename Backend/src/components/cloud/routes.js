@@ -50,12 +50,12 @@ router.delete('/delete/:path(*)', verifyToken, pathValidator, async(req, res, ne
 
 router.post('/copy/:path(*)', verifyToken, pathValidator, newPathValidator, async(req, res, next) => {
     const path = req.params.path || ''
-    response.process(req, res, next, controller.copy, req.user._id, path, req.body.newPath)
+    response.process(req, res, next, controller.copy, req.user._id, path, req.body.newPath, req.body.isFile)
 })
 
 router.post('/move/:path(*)', verifyToken, pathValidator, newPathValidator, async(req, res, next) => {
     const path = req.params.path || ''
-    response.process(req, res, next, controller.move, req.user._id, path, req.body.newPath, req.body?.reemplazar)
+    response.process(req, res, next, controller.move, req.user._id, path, req.body.newPath, req.body.isFile, req.body?.reemplazar)
 })
 
 router.post('/rename/:path(*)', verifyToken, pathValidator, nameValidator, async(req, res, next) => {
