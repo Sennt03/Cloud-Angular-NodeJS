@@ -5,7 +5,7 @@ const config = {
     dev: process.env.NODE_ENV != 'production',
     port: process.env.PORT || 3000,
     whiteList: ['http://localhost:4200'],
-    dbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/cloud',
+    dbUri: process.env.URI_DB || 'mongodb://localhost:27017/cloud',
     jwtSecret:  process.env.JWT_SECRET || 'secret in key gen',
     // cloudinary
     cloud_name: process.env.CLOUD_NAME,
