@@ -63,5 +63,13 @@ router.post('/rename/:path(*)', verifyToken, pathValidator, nameValidator, async
     response.process(req, res, next, controller.rename, req.user._id, path, req.body.name)
 })
 
+router.get('/all/files', verifyToken, async(req, res, next) => {
+    response.process(req, res, next, controller.allInfo, req.user._id, true)
+})
+
+router.get('/all/folders', verifyToken, async(req, res, next) => {
+    response.process(req, res, next, controller.allInfo, req.user._id, false)
+})
+
 
 module.exports = router

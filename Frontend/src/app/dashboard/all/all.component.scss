@@ -1,0 +1,35 @@
+.dashboard{
+    height: 100vh;
+    background: #FFF;
+    padding: 20px;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    width: 100%;
+    top: 0;
+    margin: 0;
+}
+
+.list{
+    width: 100%;
+    overflow: auto;
+}
+
+.item{
+    cursor: pointer !important;
+
+    &:hover{
+        background: #ebebeb;
+    }
+}
+
+@media(min-width: 768px){
+    .dashboard{
+        width: 90%;
+        top: 20px;
+        margin: 0 auto;
+        height: 92vh;
+    }
+}

@@ -1,0 +1,22 @@
+<div class="dashboard">
+    <div class="header">
+        <h2>
+            All {{ type() }} - My Unit
+        </h2>
+        <hr>
+    </div>
+
+    <div class="list">
+        <mat-list>
+            @for(item of data(); track item.path){
+                <mat-list-item class="item" (click)="go('/' + item.path)">
+                    <mat-icon matListItemIcon>{{ type() == 'files' ? 'note' : 'folder' }}</mat-icon>
+                    <div matListItemLine>/{{ item.path }}</div>
+                    <div matListItemTitle>{{ item.name }}</div>
+                </mat-list-item>
+            }
+        </mat-list>
+    </div>
+
+    <app-loading [show]="loading()"></app-loading>
+</div>

@@ -13,14 +13,14 @@
             <span class="tooltip">Dashboard</span>
         </li>
         <li>
-            <a routerLink="/folders">
+            <a routerLink="/all/folders">
                 <i class="bx bx-folder"></i>
                 <span class="links_name">All Folders</span>
             </a>
             <span class="tooltip">All Folders</span>
         </li>
         <li>
-            <a routerLink="/files">
+            <a routerLink="/all/files">
                 <i class="bx bx-file"></i>
                 <span class="links_name">All Files</span>
             </a>
@@ -49,13 +49,13 @@
                 <p class="title last">Files: {{ user().analytics.files }}</p>
             </div>
         </div>
-        <li>
+        <!-- <li>
             <a routerLink="/settings">
             <i class="bx bx-cog"></i>
             <span class="links_name">Settings</span>
             </a>
             <span class="tooltip">Settings</span>
-        </li>
+        </li> -->
         <li class="profile">
             <div class="profile-details">
                 <div class="name">{{ user().username }}</div>

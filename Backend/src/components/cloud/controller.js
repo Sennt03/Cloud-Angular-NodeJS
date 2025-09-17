@@ -307,11 +307,36 @@ async function analitycsData(userId) {
     };
 }
 
+async function allInfo(userId, files) {
+  const pathComplete = path.join(cloudPath + userId);
+
+  async function readDirRecursive(base, relative = "") {
+    const entries = await fs.promises.readdir(path.join(base, relative), { withFileTypes: true });
+    let results = [];
+
+    for (const entry of entries) {
+      const relPath = path.join(relative, entry.name);
+      if (entry.isDirectory()) {
+        if (!files) {
+          results.push({ path: relative.replace(/\\/g, "/"), name: entry.name });
+        }
+        results = results.concat(await readDirRecursive(base, relPath));
+      } else {
+        if (files) {
+          results.push({ path: relative.replace(/\\/g, "/"), name: entry.name });
+        }
+      }
+    }
+    return results;
+  }
+
+  return readDirRecursive(pathComplete);
+}
+
 module.exports = {
     registerDir,
     openDir,
     detailFile,
-    // getImage,
     downloadFile,
     createDir,
     uploadFile,
@@ -319,5 +344,6 @@ module.exports = {
     copy,
     move,
     rename,
-    analitycsData
+    analitycsData,
+    allInfo
 }

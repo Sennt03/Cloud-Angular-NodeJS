@@ -37,3 +37,8 @@ export const defaultInfoActions: LsActionsInfo = {
     type: 'copy',
     isFile: false
 }
+
+export interface LsAll{
+    path: string,
+    name: string
+}

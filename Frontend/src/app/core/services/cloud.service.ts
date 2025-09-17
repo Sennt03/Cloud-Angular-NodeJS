@@ -1,7 +1,7 @@
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { EventEmitter, inject, Injectable } from '@angular/core';
-import { LsResMessage, LsUploadFile } from '@models/cloud.models';
-import { Observable, Subject } from 'rxjs';
+import { LsAll, LsResMessage, LsUploadFile } from '@models/cloud.models';
+import { Observable, of, Subject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { environment } from 'enviroments/enviroment';
 
@@ -87,6 +87,14 @@ export class CloudService {
   
   move(path: string, newPath: string, isFile: boolean): Observable<LsResMessage>{
     return this.http.post<LsResMessage>(this.url+'/move/'+decodeURI(path), { newPath, isFile })
+  }
+
+  getAllFiles(): Observable<LsAll[]>{
+    return this.http.get<LsAll[]>(this.url+'/all/files')
+  }
+
+  getAllFolders(): Observable<LsAll[]>{
+    return this.http.get<LsAll[]>(this.url+'/all/folders')
   }
   
 }
