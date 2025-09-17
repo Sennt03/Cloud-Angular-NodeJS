@@ -33,38 +33,44 @@ Configurada en **Zoneless Mode** (sin `Zone.js`) para utilizar **Signals**, opti
 ---
 
 ## 🛠️ Tecnologías utilizadas
-| Frontend | Backend | Hosting |
+| Frontend | Backend | Despliegue |
 |----------|---------|---------|
 | Angular 20 (Zoneless, Signals) | Node.js (REST API) | AWS |
 
 ---
 
 ## 📦 Instalación y ejecución en local
+🔗 **O puede ver la app desplegada en:** [cloud.davidruiz.site](https://cloud.davidruiz.site)
 
-### 🔹 Backend
+## Ejecutar en modo desarrollo
+
+- Asegurate de tener instalado:
+  - node v22+ instalado
+  - npm 10.9.3+
+  - @angular/cli 20+
+  - mongodb (en ejecución)
+
 # Clonar repositorio
+```bash
 git clone https://github.com/Sennt03/Cloud-Angular-NodeJS
 cd Cloud-Angular-NodeJS
+```
 
+### 🔹 Backend
 # Instalar dependencias
 ```bash
 cd Backend
 npm install
+npm run dev
 ```
 
-# Ejecutar en modo desarrollo
-npm run dev
-
 ### 🔹 Frontend
-
 # Instalar dependencias
 ```bash
 cd Frontend
 npm install
-```
-
-# Ejecutar en modo desarrollo
 ng serve
+```
 
 La aplicación estará disponible en:
 👉 `http://localhost:4200/`
