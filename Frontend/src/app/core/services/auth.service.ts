@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { LsFields, LsisAvaible, LsLogin, LsRegister, LsResAuth } from '@models/auth.models';
 import { LsUser } from '@models/user.models';
-import { environment } from 'enviroments/enviroment';
+import { environment } from 'environments/environment';
 import { Observable, ObservableInput, throwError } from 'rxjs';
 import { noInterceptToken } from './token.service';
 

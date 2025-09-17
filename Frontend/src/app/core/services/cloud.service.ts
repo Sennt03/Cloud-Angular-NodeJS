@@ -3,7 +3,7 @@ import { EventEmitter, inject, Injectable } from '@angular/core';
 import { LsAll, LsResMessage, LsUploadFile } from '@models/cloud.models';
 import { Observable, of, Subject } from 'rxjs';
 import { AuthService } from './auth.service';
-import { environment } from 'enviroments/enviroment';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
